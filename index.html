@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Бриз Технолоджи— Студия создания и продвижения сайтов</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fontsource Inter -->
+    <link href="https://fontsource.org/files/inter/400.css" rel="stylesheet">
+    <link href="https://fontsource.org/files/inter/700.css" rel="stylesheet">
+    <!-- Yandex Maps API -->
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=your_api_key&lang=ru_RU" type="text/javascript"></script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #2563eb; }
+
+        /* Smooth Scroll */
+        html { scroll-behavior: smooth; }
+        
+        .tool-panel { display: none; }
+        .tool-panel.active { display: block; }
+
+        /* Portfolio hover effect */
+        .portfolio-card:hover .portfolio-overlay {
+            opacity: 1;
+        }
+
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Map Container */
+        #yandex-map {
+            width: 100%;
+            height: 500px;
+            border-radius: 1.5rem;
+            overflow: hidden;
+        }
+
+        /* Custom Map Styles */
+        .ymaps-2-1-79-ground-pane {
+            filter: grayscale(100%) invert(90%) hue-rotate(180deg);
+        }
+
+        /* Pulse animation for markers */
+        @keyframes pulse-marker {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+
+        .marker-pulse {
+            animation: pulse-marker 2s infinite;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        secondary: '#1e293b',
+                        accent: '#10b981',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="font-bold text-xl md:text-2xl text-slate-800 tracking-tight">БРИЗ<span class="text-primary">ТЕХНОЛОДЖИ</span></span>
+                </div>
+                <div class="hidden lg:flex space-x-8" style="align-items: center;">
+                    <a href="#about" class="text-slate-600 hover:text-primary transition font-medium">Обо мне</a>
+                    <a href="#services" class="text-slate-600 hover:text-primary transition font-medium">Услуги</a>
+                    <a href="#tools" class="text-slate-600 hover:text-primary transition font-medium">Инструменты</a>
+                    <a href="#portfolio" class="text-slate-600 hover:text-primary transition font-medium">Портфолио</a>
+                    <a href="#blog" class="text-slate-600 hover:text-primary transition font-medium">Блог</a>
+                    <a href="#contacts" class="px-5 py-2.5 bg-primary text-white rounded-lg hover:bg-blue-700 transition font-medium">Заказать проект</a>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="lg:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-slate-600 hover:text-primary focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-b border-slate-200">
+            <a href="#about" class="block px-4 py-3 text-slate-600 hover:bg-slate-50 font-medium">Обо мне</a>
+            <a href="#services" class="block px-4 py-3 text-slate-600 hover:bg-slate-50 font-medium">Услуги</a>
+            <a href="#tools" class="block px-4 py-3 text-slate-600 hover:bg-slate-50 font-medium">Инструменты</a>
+            <a href="#portfolio" class="block px-4 py-3 text-slate-600 hover:bg-slate-50 font-medium">Портфолио</a>
+            <a href="#blog" class="block px-4 py-3 text-slate-600 hover:bg-slate-50 font-medium">Блог</a>
+            <a href="#contacts" class="block px-4 py-3 text-primary font-semibold hover:bg-slate-50">Контакты</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="about" class="pt-32 pb-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <div class="inline-block px-4 py-2 bg-blue-100 text-primary text-sm font-bold rounded-full">
+                        🚀 Удалённая работа по всей России и СНГ
+                    </div>
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 leading-tight">
+                        Михаил.<br>
+                        <span class="gradient-text">Разработка сайтов</span><br>и SEO-продвижение
+                    </h1>
+                    <p class="text-lg text-slate-600 leading-relaxed">
+                        Персональный эксперт без офисных расходов. Создаю сайты, которые продают, и продвигаю их в ТОП Яндекса и Google. Работаю честно, прозрачно и на результат.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                        <a href="#tools" class="px-8 py-4 bg-primary text-white rounded-xl font-bold shadow-lg hover:bg-blue-700 transition text-center hover:shadow-xl transform hover:-translate-y-1">
+                            Бесплатный аудит сайта
+                        </a>
+                        <a href="#portfolio" class="px-8 py-4 bg-slate-100 text-slate-700 rounded-xl font-bold hover:bg-slate-200 transition text-center">
+                            Смотреть кейсы
+                        </a>
+                    </div>
+                    <div class="pt-8 flex flex-wrap gap-6 text-sm text-slate-500">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span class="font-medium">50+ проектов</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span class="font-medium">Работа по договору</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span class="font-medium">Гарантия качества</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="absolute -inset-4 bg-gradient-to-r from-blue-100 to-emerald-100 rounded-3xl blur-2xl opacity-70"></div>
+                    <img src="https://image.qwenlm.ai/public_source/89c4ea1e-f8d2-452c-afc5-ef0be2efc264/1cc050df2-2e64-4c57-aea5-11349ea6763a.png" alt="Михаил Веб-разработчик" class="relative rounded-3xl shadow-2xl w-full object-cover h-[500px]">
+                    <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-2xl shadow-xl">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-500">Успешных проектов</p>
+                                <p class="text-xl font-bold text-slate-900">50+</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Мои услуги</h2>
+                <p class="mt-4 text-slate-600 text-lg">Комплексный подход к вашему бизнесу в интернете</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition border border-slate-100 group">
+                    <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary transition">
+                        <svg class="w-7 h-7 text-primary group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Разработка сайтов</h3>
+                    <p class="text-slate-600 mb-6">Landing Page, Корпоративные сайты, Интернет-магазины. Чистый код или Tilda/WordPress.</p>
+                    <ul class="space-y-3 mb-6 text-sm text-slate-500">
+                        <li class="flex items-center gap-2"><span class="w-2 h-2 bg-primary rounded-full"></span>Адаптивная вёрстка</li>
+                        <li class="flex items-center gap-2"><span class="w-2 h-2 bg-primary rounded-full"></span>Высокая скорость загрузки</li>
+                        <li class="flex items-center gap-2"><span class="w-2 h-2 bg-primary rounded-full"></span>Базовая SEO-оптимизация</li>
+                        <li class="flex items-center gap-2"><span class="w-2 h-2 bg-primary rounded-full"></span>Мобильная версия</li>
+                    </ul>
+                    <a href="#contacts" class="text-primary font-semibold hover:text-blue-700 inline-flex items-center gap-2">Рассчитать стоимость <span>&rarr;</span></a>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition border border-slate-100 group">
+                    <div class="w-14 h-14 bg-emerald-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-accent transition">
+                        <svg class="w-7 h-7 text-accent group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">SEO-продвижение</h3>
+                    <p class="text-slate-600 mb-6">Вывод сайта в ТОП-10 поисковых систем. Работа с семантикой, ссылками и поведенческими факторами.</p>
+                    <ul class="space-y-3 mb-6 text-sm text-slate-500">
+                        <li class="flex items-center gap-2"><span class="w-2 h-2 bg-accent rounded-full"></span>Технический аудит</li>
+                        <li class="flex items-center gap-2"><span class="w-2 h-2 bg-accent rounded-full"></span>Сбор семантического ядра</li>
+                        <li class="flex items-center gap-2"><span class="w-2 h-2 bg-accent rounded-full"></span>Ежемесячные отчёты</li>
+                        <li class="flex items-center gap-2"><span class="w-2 h-2 bg-accent rounded-full"></span>Работа с контентом</li>
+                    </ul>
+                    <a href="#contacts" class="text-primary font-semibold hover:text-blue-700 inline-flex items-center gap-2">Заказать аудит <span>&rarr;</span></a>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition border border-slate-100 group">
+                    <div class="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-purple-600 transition">
+                        <svg class="w-7 h-7 text-purple-600 group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Техподдержка</h3>
+                    <p class="text-slate-600 mb-6">Обслуживание сайтов, защита от вирусов, обновление контента, доработка функционала.</p>
+                    <ul class="space-y-3 mb-6 text-sm text-slate-500">
+                        <li class="flex items-center gap-2"><span class="w-2 h-2 bg-purple-600 rounded-full"></span>Ежедневные бэкапы</li>
+                        <li class="flex items-center gap-2"><span class="w-2 h-2 bg-purple-600 rounded-full"></span>Мониторинг uptime 24/7</li>
+                        <li class="flex items-center gap-2"><span class="w-2 h-2 bg-purple-600 rounded-full"></span>Оперативные правки</li>
+                        <li class="flex items-center gap-2"><span class="w-2 h-2 bg-purple-600 rounded-full"></span>Защита от атак</li>
+                    </ul>
+                    <a href="#contacts" class="text-primary font-semibold hover:text-blue-700 inline-flex items-center gap-2">Узнать тарифы <span>&rarr;</span></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Tools Section -->
+    <section id="tools" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Полезные инструменты</h2>
+                <p class="mt-4 text-slate-600 text-lg">Бесплатные сервисы для проверки вашего сайта и расчёта стоимости</p>
+            </div>
+
+            <!-- Tool Tabs -->
+            <div class="flex justify-center mb-8">
+                <div class="inline-flex bg-slate-100 p-1.5 rounded-xl">
+                    <button onclick="switchTool('analyzer')" class="tool-tab px-6 py-3 rounded-lg text-sm font-bold bg-white text-primary shadow-sm transition-all" id="tab-analyzer">🔍 SEO Анализатор</button>
+                    <button onclick="switchTool('calculator')" class="tool-tab px-6 py-3 rounded-lg text-sm font-bold text-slate-600 hover:text-slate-900 transition-all" id="tab-calculator">🧮 Калькулятор</button>
+                    <button onclick="switchTool('meta')" class="tool-tab px-6 py-3 rounded-lg text-sm font-bold text-slate-600 hover:text-slate-900 transition-all" id="tab-meta">🏷️ Генератор тегов</button>
+                </div>
+            </div>
+
+            <!-- Tool Content -->
+            <div class="bg-slate-50 rounded-3xl p-6 md:p-10 border border-slate-200 shadow-lg min-h-[450px]">
+                
+                <!-- SEO Analyzer -->
+                <div id="tool-analyzer" class="tool-panel active max-w-2xl mx-auto">
+                    <h3 class="text-2xl font-bold mb-6 text-slate-900">Быстрый SEO-аудит сайта</h3>
+                    <div class="flex flex-col sm:flex-row gap-4 mb-6">
+                        <input type="text" id="audit-url" placeholder="Введите URL сайта (например, myshop.ru)" class="flex-1 px-5 py-4 rounded-xl border border-slate-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none text-lg">
+                        <button onclick="runAudit()" class="px-8 py-4 bg-primary text-white rounded-xl font-bold hover:bg-blue-700 transition shadow-lg">Проверить</button>
+                    </div>
+                    <div id="audit-result" class="hidden">
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                            <div class="flex items-center justify-between mb-6">
+                                <span class="font-bold text-lg text-slate-900">Результаты анализа:</span>
+                                <span class="text-sm text-slate-500 bg-slate-100 px-3 py-1 rounded-full">Дата: <span id="audit-date"></span></span>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center p-4 bg-slate-50 rounded-xl">
+                                    <span class="font-medium text-slate-700">Title (Заголовок)</span>
+                                    <span class="text-emerald-600 font-bold bg-emerald-100 px-3 py-1 rounded-full text-sm">✓ OK (58 символов)</span>
+                                </div>
+                                <div class="flex justify-between items-center p-4 bg-slate-50 rounded-xl">
+                                    <span class="font-medium text-slate-700">H1 Заголовок</span>
+                                    <span class="text-red-500 font-bold bg-red-100 px-3 py-1 rounded-full text-sm">✗ Ошибка (Не найден)</span>
+                                </div>
+                                <div class="flex justify-between items-center p-4 bg-slate-50 rounded-xl">
+                                    <span class="font-medium text-slate-700">Скорость загрузки (Mobile)</span>
+                                    <span class="text-yellow-600 font-bold bg-yellow-100 px-3 py-1 rounded-full text-sm">⚡ 65/100</span>
+                                </div>
+                                <div class="flex justify-between items-center p-4 bg-slate-50 rounded-xl">
+                                    <span class="font-medium text-slate-700">Наличие robots.txt</span>
+                                    <span class="text-emerald-600 font-bold bg-emerald-100 px-3 py-1 rounded-full text-sm">✓ OK</span>
+                                </div>
+                                <div class="flex justify-between items-center p-4 bg-slate-50 rounded-xl">
+                                    <span class="font-medium text-slate-700">SSL сертификат</span>
+                                    <span class="text-emerald-600 font-bold bg-emerald-100 px-3 py-1 rounded-full text-sm">✓ OK</span>
+                                </div>
+                            </div>
+                            <div class="mt-6 p-5 bg-blue-50 text-blue-800 text-sm rounded-xl border border-blue-200">
+                                <strong class="block mb-2">💡 Рекомендация:</strong>
+                                Добавьте заголовок H1 на главную страницу и оптимизируйте изображения для ускорения загрузки.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calculator -->
+                <div id="tool-calculator" class="tool-panel max-w-2xl mx-auto">
+                    <h3 class="text-2xl font-bold mb-6 text-slate-900">Калькулятор стоимости сайта</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-2">Тип сайта</label>
+                            <select id="calc-type" onchange="calculatePrice()" class="w-full px-5 py-4 rounded-xl border border-slate-300 bg-white text-lg focus:ring-2 focus:ring-primary outline-none">
+                                <option value="50000">Сайт-визитка (от 50 000 ₽)</option>
+                                <option value="80000">Landing Page (от 80 000 ₽)</option>
+                                <option value="120000">Интернет-магазин (от 120 000 ₽)</option>
+                                <option value="150000">Корпоративный портал (от 150 000 ₽)</option>
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="flex items-center p-4 bg-white rounded-xl border border-slate-200">
+                                <input id="calc-urgent" type="checkbox" onchange="calculatePrice()" class="w-5 h-5 text-primary rounded border-slate-300 focus:ring-primary">
+                                <label for="calc-urgent" class="ml-3 text-slate-700 font-medium">Срочно (+30%)</label>
+                            </div>
+                            <div class="flex items-center p-4 bg-white rounded-xl border border-slate-200">
+                                <input id="calc-design" type="checkbox" onchange="calculatePrice()" class="w-5 h-5 text-primary rounded border-slate-300 focus:ring-primary">
+                                <label for="calc-design" class="ml-3 text-slate-700 font-medium">Уникальный дизайн (+40%)</label>
+                            </div>
+                        </div>
+                        <div class="pt-6 border-t border-slate-200">
+                            <div class="flex justify-between items-end">
+                                <span class="text-slate-600 font-medium">Итоговая стоимость:</span>
+                                <span id="calc-total" class="text-4xl font-bold text-primary">50 000 ₽</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-3">*Стоимость является ориентировочной. Точная смета после обсуждения ТЗ.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Meta Generator -->
+                <div id="tool-meta" class="tool-panel max-w-2xl mx-auto">
+                    <h3 class="text-2xl font-bold mb-6 text-slate-900">Генератор Meta-тегов (Title/Description)</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-2">Ключевое слово</label>
+                            <input type="text" id="meta-keyword" placeholder="Например: купить диван" class="w-full px-5 py-4 rounded-xl border border-slate-300 focus:ring-2 focus:ring-primary outline-none text-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-2">Название компании</label>
+                            <input type="text" id="meta-company" placeholder="Например: Мебель-Мастер" class="w-full px-5 py-4 rounded-xl border border-slate-300 focus:ring-2 focus:ring-primary outline-none text-lg">
+                        </div>
+                        <button onclick="generateMeta()" class="w-full py-4 bg-slate-800 text-white rounded-xl font-bold hover:bg-slate-900 transition shadow-lg">Сгенерировать теги</button>
+                        
+                        <div id="meta-result" class="hidden mt-6 space-y-4">
+                            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                                <span class="text-xs text-slate-500 uppercase font-bold block mb-2">Title (Заголовок)</span>
+                                <p id="res-title" class="text-slate-800 font-medium text-lg"></p>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                                <span class="text-xs text-slate-500 uppercase font-bold block mb-2">Description (Описание)</span>
+                                <p id="res-desc" class="text-slate-800 font-medium text-lg"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section - YANDEX MAPS -->
+    <section class="py-20 bg-slate-900 text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <svg width="100%" height="100%" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="400" cy="300" r="200" stroke="white" stroke-width="1"/>
+                <circle cx="400" cy="300" r="300" stroke="white" stroke-width="1"/>
+                <circle cx="400" cy="300" r="400" stroke="white" stroke-width="1"/>
+            </svg>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold">География проектов</h2>
+                <p class="mt-4 text-slate-400 text-lg">Работаю удалённо с клиентами по всей России и СНГ</p>
+            </div>
+            
+            <!-- Yandex Map Container -->
+            <div class="relative">
+                <div id="yandex-map" class="shadow-2xl border-4 border-slate-700"></div>
+                
+                <!-- Stats Overlay -->
+                <div class="absolute top-6 left-6 z-10 flex flex-col gap-3">
+                    <div class="bg-slate-900/90 backdrop-blur p-4 rounded-xl shadow-lg">
+                        <div class="text-center">
+                            <p class="text-3xl font-bold text-white">15+</p>
+                            <p class="text-xs text-slate-400">Городов</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900/90 backdrop-blur p-4 rounded-xl shadow-lg">
+                        <div class="text-center">
+                            <p class="text-3xl font-bold text-white">50+</p>
+                            <p class="text-xs text-slate-400">Проектов</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Legend -->
+                <div class="absolute bottom-6 left-6 z-10 bg-slate-900/90 backdrop-blur p-4 rounded-xl shadow-lg">
+                    <h4 class="text-sm font-bold text-white mb-3">Условные обозначения</h4>
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
+                            <span class="text-xs text-slate-300">Города клиентов</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 bg-emerald-500 rounded-full"></div>
+                            <span class="text-xs text-slate-300">База (Приморско-Ахтарск)</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 bg-purple-500 rounded-full"></div>
+                            <span class="text-xs text-slate-300">Крупные проекты</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Panel -->
+                <div class="absolute top-6 right-6 z-10 bg-slate-900/90 backdrop-blur p-4 rounded-xl shadow-lg max-w-xs">
+                    <h4 class="text-sm font-bold text-white mb-2">📍 Работаю удалённо</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Встречи и консультации возможны в Приморско-Ахтарске по предварительной договорённости. 
+                        Все проекты веду онлайн с полным контролем качества.
+                    </p>
+                </div>
+            </div>
+
+            <!-- City List -->
+            <div class="mt-8 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
+                <div class="bg-slate-800/50 p-3 rounded-xl text-center hover:bg-slate-800 transition">
+                    <p class="text-xs text-slate-400">📍</p>
+                    <p class="text-sm font-semibold text-white">Москва</p>
+                </div>
+                <div class="bg-slate-800/50 p-3 rounded-xl text-center hover:bg-slate-800 transition">
+                    <p class="text-xs text-slate-400">📍</p>
+                    <p class="text-sm font-semibold text-white">Санкт-Петербург</p>
+                </div>
+                <div class="bg-slate-800/50 p-3 rounded-xl text-center hover:bg-slate-800 transition">
+                    <p class="text-xs text-slate-400">📍</p>
+                    <p class="text-sm font-semibold text-white">Краснодар</p>
+                </div>
+                <div class="bg-slate-800/50 p-3 rounded-xl text-center hover:bg-slate-800 transition">
+                    <p class="text-xs text-slate-400">📍</p>
+                    <p class="text-sm font-semibold text-white">Екатеринбург</p>
+                </div>
+                <div class="bg-slate-800/50 p-3 rounded-xl text-center hover:bg-slate-800 transition">
+                    <p class="text-xs text-slate-400">📍</p>
+                    <p class="text-sm font-semibold text-white">Новосибирск</p>
+                </div>
+                <div class="bg-slate-800/50 p-3 rounded-xl text-center hover:bg-slate-800 transition">
+                    <p class="text-xs text-slate-400">📍</p>
+                    <p class="text-sm font-semibold text-white">Минск</p>
+                </div>
+                <div class="bg-slate-800/50 p-3 rounded-xl text-center hover:bg-slate-800 transition">
+                    <p class="text-xs text-slate-400">📍</p>
+                    <p class="text-sm font-semibold text-white">Алматы</p>
+                </div>
+                <div class="bg-emerald-900/50 p-3 rounded-xl text-center border border-emerald-500/30">
+                    <p class="text-xs text-emerald-400">★</p>
+                    <p class="text-sm font-semibold text-emerald-400">Приморско-Ахтарск</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Портфолио и Кейсы</h2>
+                <p class="mt-4 text-slate-600 text-lg">Реальные проекты с измеримым результатом</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Case 1 -->
+                <div class="portfolio-card bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition group">
+                    <div class="h-56 overflow-hidden relative">
+                        <img src="https://image.qwenlm.ai/public_source/89c4ea1e-f8d2-452c-afc5-ef0be2efc264/14a584687-27ab-4949-9a8d-f46e9196f866.png" alt="Интернет-магазин мебели" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                        <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent opacity-0 transition duration-300 flex items-end p-6">
+                            <div class="text-white">
+                                <p class="font-bold text-lg">Nordic Home</p>
+                                <p class="text-sm text-slate-300">E-commerce проект</p>
+                            </div>
+                        </div>
+                        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1.5 rounded-lg text-xs font-bold text-slate-800">E-commerce</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Интернет-магазин "Nordic Home"</h3>
+                        <p class="text-slate-600 text-sm mb-4 line-clamp-2">Разработка дизайна и вёрстка на Tilda. Интеграция с CRM и платёжными системами.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full font-medium">Tilda</span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full font-medium">Zero Block</span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full font-medium">CRM</span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full font-medium">Онлайн-оплата</span>
+                        </div>
+                        <div class="border-t border-slate-100 pt-4">
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <span class="block text-xs text-slate-500">Было</span>
+                                    <span class="text-sm text-slate-400">Нет продаж</span>
+                                </div>
+                                <div>
+                                    <span class="block text-xs text-slate-500">Стало</span>
+                                    <span class="text-sm font-bold text-accent">+40% продаж</span>
+                                </div>
+                            </div>
+                            <a href="#contacts" class="w-full block py-3 bg-primary/10 text-primary text-center rounded-xl font-semibold hover:bg-primary hover:text-white transition">Обсудить проект</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 2 -->
+                <div class="portfolio-card bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition group">
+                    <div class="h-56 overflow-hidden relative">
+                        <img src="https://image.qwenlm.ai/public_source/89c4ea1e-f8d2-452c-afc5-ef0be2efc264/1706e3214-83c3-4671-86dd-29987b4cd896.png" alt="Корпоративный сайт застройщика" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                        <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent opacity-0 transition duration-300 flex items-end p-6">
+                            <div class="text-white">
+                                <p class="font-bold text-lg">Монолит Строй</p>
+                                <p class="text-sm text-slate-300">Корпоративный сайт</p>
+                            </div>
+                        </div>
+                        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1.5 rounded-lg text-xs font-bold text-slate-800">Корпоративный</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Сайт для застройщика "Монолит"</h3>
+                        <p class="text-slate-600 text-sm mb-4 line-clamp-2">Многостраничный сайт на WordPress с каталогом объектов и формой заявки.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full font-medium">WordPress</span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full font-medium">ACF Pro</span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full font-medium">SEO</span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full font-medium">Каталог</span>
+                        </div>
+                        <div class="border-t border-slate-100 pt-4">
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <span class="block text-xs text-slate-500">Было</span>
+                                    <span class="text-sm text-slate-400">Нет в поиске</span>
+                                </div>
+                                <div>
+                                    <span class="block text-xs text-slate-500">Стало</span>
+                                    <span class="text-sm font-bold text-accent">ТОП-3 региона</span>
+                                </div>
+                            </div>
+                            <a href="#contacts" class="w-full block py-3 bg-primary/10 text-primary text-center rounded-xl font-semibold hover:bg-primary hover:text-white transition">Обсудить проект</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 3 -->
+                <div class="portfolio-card bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition group">
+                    <div class="h-56 overflow-hidden relative bg-gradient-to-br from-purple-500 to-indigo-600">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center text-white p-6">
+                                <svg class="w-16 h-16 mx-auto mb-4 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                                <p class="font-bold text-lg">DentPro Clinic</p>
+                                <p class="text-sm opacity-80">Landing Page</p>
+                            </div>
+                        </div>
+                        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1.5 rounded-lg text-xs font-bold text-slate-800">Landing Page</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Стоматология "DentPro"</h3>
+                        <p class="text-slate-600 text-sm mb-4 line-clamp-2">Одностраничный сайт для клиники с формой записи и онлайн-консультантом.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full font-medium">HTML/CSS</span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full font-medium">JS</span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full font-medium">Форма записи</span>
+                        </div>
+                        <div class="border-t border-slate-100 pt-4">
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <span class="block text-xs text-slate-500">Было</span>
+                                    <span class="text-sm text-slate-400">5 заявок/мес</span>
+                                </div>
+                                <div>
+                                    <span class="block text-xs text-slate-500">Стало</span>
+                                    <span class="text-sm font-bold text-accent">25 заявок/мес</span>
+                                </div>
+                            </div>
+                            <a href="#contacts" class="w-full block py-3 bg-primary/10 text-primary text-center rounded-xl font-semibold hover:bg-primary hover:text-white transition">Обсудить проект</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 4 -->
+                <div class="portfolio-card bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition group">
+                    <div class="h-56 overflow-hidden relative bg-gradient-to-br from-emerald-500 to-teal-600">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center text-white p-6">
+                                <svg class="w-16 h-16 mx-auto mb-4 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                                <p class="font-bold text-lg">FreshMarket</p>
+                                <p class="text-sm opacity-80">Интернет-магазин</p>
+                            </div>
+                        </div>
+                        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1.5 rounded-lg text-xs font-bold text-slate-800">E-commerce</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Магазин продуктов "FreshMarket"</h3>
+                        <p class="text-slate-600 text-sm mb-4 line-clamp-2">Онлайн-магазин с доставкой. Каталог, корзина, интеграция с 1С.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full font-medium">WordPress</span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full font-medium">WooCommerce</span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full font-medium">1С</span>
+                        </div>
+                        <div class="border-t border-slate-100 pt-4">
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <span class="block text-xs text-slate-500">Было</span>
+                                    <span class="text-sm text-slate-400">Нет онлайн-продаж</span>
+                                </div>
+                                <div>
+                                    <span class="block text-xs text-slate-500">Стало</span>
+                                    <span class="text-sm font-bold text-accent">300+ заказов/мес</span>
+                                </div>
+                            </div>
+                            <a href="#contacts" class="w-full block py-3 bg-primary/10 text-primary text-center rounded-xl font-semibold hover:bg-primary hover:text-white transition">Обсудить проект</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 5 -->
+                <div class="portfolio-card bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition group">
+                    <div class="h-56 overflow-hidden relative bg-gradient-to-br from-orange-500 to-red-600">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center text-white p-6">
+                                <svg class="w-16 h-16 mx-auto mb-4 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                                <p class="font-bold text-lg">EduCenter</p>
+                                <p class="text-sm opacity-80">Образовательный портал</p>
+                            </div>
+                        </div>
+                        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1.5 rounded-lg text-xs font-bold text-slate-800">Портал</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Образовательный центр "EduCenter"</h3>
+                        <p class="text-slate-600 text-sm mb-4 line-clamp-2">Портал для онлайн-курсов с личным кабинетом студента.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full font-medium">React</span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full font-medium">Node.js</span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full font-medium">LMS</span>
+                        </div>
+                        <div class="border-t border-slate-100 pt-4">
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <span class="block text-xs text-slate-500">Было</span>
+                                    <span class="text-sm text-slate-400">Нет платформы</span>
+                                </div>
+                                <div>
+                                    <span class="block text-xs text-slate-500">Стало</span>
+                                    <span class="text-sm font-bold text-accent">1000+ студентов</span>
+                                </div>
+                            </div>
+                            <a href="#contacts" class="w-full block py-3 bg-primary/10 text-primary text-center rounded-xl font-semibold hover:bg-primary hover:text-white transition">Обсудить проект</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 6 -->
+                <div class="portfolio-card bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition group">
+                    <div class="h-56 overflow-hidden relative bg-gradient-to-br from-blue-500 to-cyan-600">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center text-white p-6">
+                                <svg class="w-16 h-16 mx-auto mb-4 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                                <p class="font-bold text-lg">HomeStyle</p>
+                                <p class="text-sm opacity-80">Сайт визитка</p>
+                            </div>
+                        </div>
+                        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1.5 rounded-lg text-xs font-bold text-slate-800">Визитка</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Дизайн-студия "HomeStyle"</h3>
+                        <p class="text-slate-600 text-sm mb-4 line-clamp-2">Стильный сайт-визитка для студии интерьерного дизайна.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full font-medium">Tilda</span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full font-medium">Анимации</span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full font-medium">Портфолио</span>
+                        </div>
+                        <div class="border-t border-slate-100 pt-4">
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <span class="block text-xs text-slate-500">Было</span>
+                                    <span class="text-sm text-slate-400">Нет сайта</span>
+                                </div>
+                                <div>
+                                    <span class="block text-xs text-slate-500">Стало</span>
+                                    <span class="text-sm font-bold text-accent">20+ клиентов/мес</span>
+                                </div>
+                            </div>
+                            <a href="#contacts" class="w-full block py-3 bg-primary/10 text-primary text-center rounded-xl font-semibold hover:bg-primary hover:text-white transition">Обсудить проект</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="#contacts" class="inline-flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-xl font-bold hover:bg-slate-800 transition shadow-lg">
+                    <span>Хочу такой же сайт</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Блог и База знаний</h2>
+                    <p class="mt-4 text-slate-600 text-lg">Полезные статьи о веб-разработке и SEO</p>
+                </div>
+                <a href="#" class="inline-flex items-center gap-2 text-primary font-bold hover:text-blue-700 transition">
+                    Все статьи <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                </a>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Article 1 -->
+                <article class="group cursor-pointer">
+                    <div class="h-56 rounded-2xl mb-5 overflow-hidden shadow-lg">
+                        <img src="https://image.qwenlm.ai/public_source/89c4ea1e-f8d2-452c-afc5-ef0be2efc264/1ceb0a5d2-d56c-4061-9260-4cec0c4d3787.png" alt="SEO оптимизация" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="px-3 py-1 bg-blue-100 text-primary text-xs font-bold rounded-full uppercase tracking-wide">SEO</span>
+                        <span class="text-xs text-slate-400">15 мин чтения</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-primary transition">Заказать сайт визитку в Москве: цена и сроки 2024</h3>
+                    <p class="text-slate-600 text-sm line-clamp-3 mb-4">Разбираем актуальные цены на разработку сайтов в столице. Почему дешёвый сайт может стоить дорого в обслуживании. Полный гайд по выбору подрядчика.</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center">
+                            <span class="text-sm font-bold text-slate-600">М</span>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-slate-900">Михаил</p>
+                            <p class="text-xs text-slate-500">10 января 2024</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Article 2 -->
+                <article class="group cursor-pointer">
+                    <div class="h-56 rounded-2xl mb-5 overflow-hidden shadow-lg">
+                        <img src="https://image.qwenlm.ai/public_source/89c4ea1e-f8d2-452c-afc5-ef0be2efc264/11ceb1002-e0d4-449f-aa6e-bd5058902cf1.png" alt="Веб-разработка" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="px-3 py-1 bg-emerald-100 text-accent text-xs font-bold rounded-full uppercase tracking-wide">Разработка</span>
+                        <span class="text-xs text-slate-400">20 мин чтения</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-primary transition">10 ошибок SEO-оптимизации в 2024 году</h3>
+                    <p class="text-slate-600 text-sm line-clamp-3 mb-4">Чек-лист для проверки вашего сайта. Что нужно исправить, чтобы не попасть под фильтры поисковиков. Практические советы от эксперта.</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center">
+                            <span class="text-sm font-bold text-slate-600">М</span>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-slate-900">Михаил</p>
+                            <p class="text-xs text-slate-500">5 января 2024</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Article 3 -->
+                <article class="group cursor-pointer">
+                    <div class="h-56 rounded-2xl mb-5 overflow-hidden shadow-lg">
+                        <img src="https://image.qwenlm.ai/public_source/89c4ea1e-f8d2-452c-afc5-ef0be2efc264/1a62fae45-8e61-4195-b1dd-e3189cf967d2.png" alt="Кейс успех" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="px-3 py-1 bg-purple-100 text-purple-600 text-xs font-bold rounded-full uppercase tracking-wide">Кейсы</span>
+                        <span class="text-xs text-slate-400">12 мин чтения</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-primary transition">Как мы подняли трафик стоматологии в 3 раза</h3>
+                    <p class="text-slate-600 text-sm line-clamp-3 mb-4">Подробный разбор кейса: технический аудит, работа с контентом и локальное SEO продвижение. Реальные цифры и результаты.</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center">
+                            <span class="text-sm font-bold text-slate-600">М</span>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-slate-900">Михаил</p>
+                            <p class="text-xs text-slate-500">28 декабря 2023</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Article 4 -->
+                <article class="group cursor-pointer">
+                    <div class="h-56 rounded-2xl mb-5 overflow-hidden shadow-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                        <div class="text-center text-white p-6">
+                            <svg class="w-16 h-16 mx-auto mb-4 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                            <p class="font-bold text-lg">Гайды</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="px-3 py-1 bg-indigo-100 text-indigo-600 text-xs font-bold rounded-full uppercase tracking-wide">Гайды</span>
+                        <span class="text-xs text-slate-400">25 мин чтения</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-primary transition">Как выбрать подрядчика по разработке сайта</h3>
+                    <p class="text-slate-600 text-sm line-clamp-3 mb-4">Полное руководство по выбору исполнителя. На что обращать внимание, какие вопросы задавать, как избежать мошенников.</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center">
+                            <span class="text-sm font-bold text-slate-600">М</span>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-slate-900">Михаил</p>
+                            <p class="text-xs text-slate-500">20 декабря 2023</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Article 5 -->
+                <article class="group cursor-pointer">
+                    <div class="h-56 rounded-2xl mb-5 overflow-hidden shadow-lg bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
+                        <div class="text-center text-white p-6">
+                            <svg class="w-16 h-16 mx-auto mb-4 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <p class="font-bold text-lg">Цены</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="px-3 py-1 bg-amber-100 text-amber-600 text-xs font-bold rounded-full uppercase tracking-wide">Цены</span>
+                        <span class="text-xs text-slate-400">10 мин чтения</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-primary transition">Почему дешёвый сайт = дорогой в обслуживании</h3>
+                    <p class="text-slate-600 text-sm line-clamp-3 mb-4">Разбираем скрытые расходы на поддержку некачественных сайтов. Почему экономия на разработке может стоить дороже.</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center">
+                            <span class="text-sm font-bold text-slate-600">М</span>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-slate-900">Михаил</p>
+                            <p class="text-xs text-slate-500">15 декабря 2023</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Article 6 -->
+                <article class="group cursor-pointer">
+                    <div class="h-56 rounded-2xl mb-5 overflow-hidden shadow-lg bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center">
+                        <div class="text-center text-white p-6">
+                            <svg class="w-16 h-16 mx-auto mb-4 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <p class="font-bold text-lg">Чек-листы</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="px-3 py-1 bg-rose-100 text-rose-600 text-xs font-bold rounded-full uppercase tracking-wide">Чек-листы</span>
+                        <span class="text-xs text-slate-400">8 мин чтения</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-primary transition">Готов ли ваш сайт к продажам: чек-лист из 20 пунктов</h3>
+                    <p class="text-slate-600 text-sm line-clamp-3 mb-4">Проверьте свой сайт по нашему чек-листу. Узнайте, что мешает вам получать больше заявок от клиентов.</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center">
+                            <span class="text-sm font-bold text-slate-600">М</span>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-slate-900">Михаил</p>
+                            <p class="text-xs text-slate-500">10 декабря 2023</p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contacts Section -->
+    <section id="contacts" class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-6">Обсудить проект</h2>
+                    <p class="text-slate-600 mb-8 text-lg">Оставьте заявку, и я свяжусь с вами в течение рабочего дня для бесплатной консультации.</p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm text-primary flex-shrink-0">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900 text-lg">Телефон / WhatsApp / Telegram</h4>
+                                <a href="tel:+79183338669" class="text-primary hover:underline text-lg font-medium">+7 (918) 333-86-69</a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm text-primary flex-shrink-0">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900 text-lg">Email</h4>
+                                <a href="mailto:info@briz-tech.ru" class="text-primary hover:underline text-lg font-medium">info@briz-tech.ru</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm text-primary flex-shrink-0">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900 text-lg">Локация</h4>
+                                <p class="text-slate-600">Работаю удалённо. Личные встречи — Приморско-Ахтарск (по договорённости).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-10 p-6 bg-white rounded-2xl shadow-sm border border-slate-200">
+                        <h4 class="font-bold text-slate-900 mb-4">Мессенджеры</h4>
+                        <div class="flex gap-4">
+                            <a href="https://wa.me/79183338669" class="flex items-center gap-3 px-5 py-3 bg-green-500 text-white rounded-xl hover:bg-green-600 transition font-medium">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                                WhatsApp
+                            </a>
+                            <a href="https://t.me/+79183338669" class="flex items-center gap-3 px-5 py-3 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition font-medium">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                                Telegram
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 md:p-10 rounded-3xl shadow-xl border border-slate-100">
+                    <form onsubmit="event.preventDefault(); alert('Спасибо! Заявка отправлена. Я свяжусь с вами в ближайшее время.');">
+                        <div class="space-y-5">
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-2">Ваше имя</label>
+                                <input type="text" required class="w-full px-5 py-4 rounded-xl border border-slate-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition text-lg" placeholder="Иван Иванов">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-2">Контакт (Телефон/Telegram)</label>
+                                <input type="text" required class="w-full px-5 py-4 rounded-xl border border-slate-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition text-lg" placeholder="+7 (___) ___-__-__">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-2">Город</label>
+                                <input type="text" placeholder="Например: Москва" class="w-full px-5 py-4 rounded-xl border border-slate-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition text-lg">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-2">Сообщение</label>
+                                <textarea rows="4" class="w-full px-5 py-4 rounded-xl border border-slate-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition text-lg" placeholder="Опишите ваш проект..."></textarea>
+                            </div>
+                            <button type="submit" class="w-full py-5 bg-primary text-white font-bold rounded-xl hover:bg-blue-700 transition shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-lg">
+                                Отправить заявку
+                            </button>
+                            <p class="text-xs text-center text-slate-400 mt-4">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности.</p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-16 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <div class="lg:col-span-2">
+                    <span class="font-bold text-2xl text-white tracking-tight">БРИЗ<span class="text-primary">ТЕХНОЛОДЖИ</span></span>
+                    <p class="mt-6 text-sm max-w-md leading-relaxed">Студия веб-разработки и SEO-продвижения. Создаём сайты, которые приносят прибыль. Работаю по всей России и СНГ удалённо.</p>
+                    <div class="flex gap-4 mt-6">
+                        <a href="https://wa.me/79183338669" class="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-green-500 hover:text-white transition">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                        </a>
+                        <a href="https://t.me/+79183338669" class="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-blue-500 hover:text-white transition">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-6 text-lg">Услуги</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#" class="hover:text-white transition">Разработка сайтов</a></li>
+                        <li><a href="#" class="hover:text-white transition">SEO-продвижение</a></li>
+                        <li><a href="#" class="hover:text-white transition">Техподдержка</a></li>
+                        <li><a href="#" class="hover:text-white transition">Аудит сайта</a></li>
+                        <li><a href="#" class="hover:text-white transition">Консультации</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-6 text-lg">Контакты</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                            +7 (918) 333-86-69
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            info@briz-tech.ru
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            Приморско-Ахтарск
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
+                <p>&copy; 2024 БРИЗТЕХНОЛОДЖИ. Все права защищены.</p>
+                <div class="flex flex-wrap justify-center gap-6">
+                    <a href="#" class="hover:text-white transition">Политика конфиденциальности</a>
+                    <a href="#" class="hover:text-white transition">Договор оферты</a>
+                    <a href="#" class="hover:text-white transition">Реквизиты</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Tool Switcher
+        function switchTool(toolId) {
+            document.querySelectorAll('.tool-panel').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tool-tab').forEach(el => {
+                el.classList.remove('bg-white', 'text-primary', 'shadow-sm');
+                el.classList.add('text-slate-600');
+            });
+
+            document.getElementById('tool-' + toolId).classList.add('active');
+            
+            const activeTab = document.getElementById('tab-' + toolId);
+            activeTab.classList.add('bg-white', 'text-primary', 'shadow-sm');
+            activeTab.classList.remove('text-slate-600');
+        }
+
+        // SEO Analyzer Simulation
+        function runAudit() {
+            const urlInput = document.getElementById('audit-url');
+            const resultDiv = document.getElementById('audit-result');
+            const dateSpan = document.getElementById('audit-date');
+            
+            if(!urlInput.value) {
+                alert('Пожалуйста, введите URL сайта');
+                return;
+            }
+
+            resultDiv.classList.add('hidden');
+            const button = document.querySelector('#tool-analyzer button');
+            const originalText = button.innerText;
+            button.innerText = 'Анализирую...';
+            button.disabled = true;
+
+            setTimeout(() => {
+                resultDiv.classList.remove('hidden');
+                dateSpan.innerText = new Date().toLocaleDateString('ru-RU');
+                button.innerText = originalText;
+                button.disabled = false;
+            }, 1500);
+        }
+
+        // Calculator Logic
+        function calculatePrice() {
+            const basePrice = parseInt(document.getElementById('calc-type').value);
+            const isUrgent = document.getElementById('calc-urgent').checked;
+            const isDesign = document.getElementById('calc-design').checked;
+
+            let total = basePrice;
+
+            if (isUrgent) total *= 1.3;
+            if (isDesign) total *= 1.4;
+
+            const formatter = new Intl.NumberFormat('ru-RU', {
+                style: 'currency',
+                currency: 'RUB',
+                maximumFractionDigits: 0
+            });
+
+            document.getElementById('calc-total').innerText = formatter.format(total);
+        }
+
+        // Meta Generator Logic
+        function generateMeta() {
+            const keyword = document.getElementById('meta-keyword').value;
+            const company = document.getElementById('meta-company').value;
+            const resultDiv = document.getElementById('meta-result');
+
+            if(!keyword || !company) {
+                alert('Заполните оба поля');
+                return;
+            }
+
+            const title = `${keyword} - ${company} | Официальный сайт`;
+            const desc = `Купить ${keyword.toLowerCase()} в компании ${company}. Низкие цены, высокое качество, гарантия. Закажите ${keyword.toLowerCase()} прямо сейчас!`;
+
+            document.getElementById('res-title').innerText = title;
+            document.getElementById('res-desc').innerText = desc;
+            resultDiv.classList.remove('hidden');
+        }
+
+        // Yandex Maps Initialization
+        ymaps.ready(init);
+
+        function init() {
+            // Create map centered on Russia
+            var myMap = new ymaps.Map("yandex-map", {
+                center: [55.751244, 37.618423], // Moscow coordinates
+                zoom: 5,
+                controls: ['zoomControl', 'fullscreenControl', 'typeSelector']
+            }, {
+                searchControlProvider: 'yandex#search'
+            });
+
+            // Custom placemark styles
+            var clientPlacemarkStyle = {
+                iconColor: '#3b82f6',
+                preset: 'islands#blueCircleDotIcon'
+            };
+
+            var homePlacemarkStyle = {
+                iconColor: '#10b981',
+                preset: 'islands#greenCircleDotIcon'
+            };
+
+            var largeProjectStyle = {
+                iconColor: '#a855f7',
+                preset: 'islands#purpleCircleDotIcon'
+            };
+
+            // City coordinates [lat, lon]
+            var cities = [
+                { name: 'Москва', coords: [55.751244, 37.618423], style: clientPlacemarkStyle, projects: 15 },
+                { name: 'Санкт-Петербург', coords: [59.934280, 30.335099], style: clientPlacemarkStyle, projects: 8 },
+                { name: 'Краснодар', coords: [45.035470, 38.975313], style: clientPlacemarkStyle, projects: 6 },
+                { name: 'Екатеринбург', coords: [56.838926, 60.605703], style: clientPlacemarkStyle, projects: 4 },
+                { name: 'Новосибирск', coords: [55.008353, 82.935733], style: clientPlacemarkStyle, projects: 3 },
+                { name: 'Минск', coords: [53.900600, 27.558972], style: clientPlacemarkStyle, projects: 5 },
+                { name: 'Алматы', coords: [43.222015, 76.851249], style: clientPlacemarkStyle, projects: 3 },
+                { name: 'Приморско-Ахтарск ★', coords: [46.053889, 38.170556], style: homePlacemarkStyle, projects: 'База' }
+            ];
+
+            // Add placemarks to map
+            cities.forEach(function(city) {
+                var placemark = new ymaps.Placemark(city.coords, {
+                    balloonContentHeader: city.name,
+                    balloonContentBody: city.projects === 'База' ? 
+                        'Моя база для личных встреч' : 
+                        `Реализовано проектов: ${city.projects}`,
+                    balloonContentFooter: 'БРИЗТЕХНОЛОДЖИ'
+                }, city.style);
+
+                myMap.geoObjects.add(placemark);
+            });
+
+            // Set map bounds to show all markers
+            myMap.setBounds(myMap.geoObjects.getBounds(), {
+                checkZoomRange: true
+            });
+        }
+    </script>
+</body>
+</html>
+
